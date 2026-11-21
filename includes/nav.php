@@ -1,4 +1,5 @@
 <?php
+// This navigation is included on public and admin pages
 $currentPage = basename($_SERVER['PHP_SELF']);
 $basePath = isset($basePath) ? $basePath : '';
 ?>

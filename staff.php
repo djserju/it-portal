@@ -1,9 +1,10 @@
 <?php
 require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/classes/Database.php';
+require_once __DIR__ . '/classes/Staff.php';
 
-$pdo = db();
-$stmt = $pdo->query('SELECT * FROM staff ORDER BY id ASC');
-$staff = $stmt->fetchAll();
+$pdo = (new Database())->getConnection();
+$staff = (new Staff($pdo))->all();
 
 $pageTitle = 'Department Staff';
 require_once __DIR__ . '/includes/header.php';
@@ -28,8 +29,8 @@ require_once __DIR__ . '/includes/header.php';
                 <?php endif; ?>
                 <h2><?= h($person['name']) ?></h2>
                 <p><?= h($person['position']) ?></p>
-                <p>Phone: <?= h($person['phone']) ?></p>
-                <p>Email: <?= h($person['email']) ?></p>
+                <p>Phone: <a href="tel:<?= h(preg_replace('/[^0-9+]/', '', (string) $person['phone'])) ?>"><?= h($person['phone']) ?></a></p>
+                <p>Email: <a href="mailto:<?= h($person['email']) ?>"><?= h($person['email']) ?></a></p>
             </div>
         <?php endforeach; ?>
     </div>

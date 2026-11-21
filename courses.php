@@ -1,9 +1,10 @@
 <?php
 require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/classes/Database.php';
+require_once __DIR__ . '/classes/Course.php';
 
-$pdo = db();
-$stmt = $pdo->query('SELECT * FROM courses ORDER BY code ASC');
-$courses = $stmt->fetchAll();
+$pdo = (new Database())->getConnection();
+$courses = (new Course($pdo))->all();
 
 $pageTitle = 'IT Courses';
 require_once __DIR__ . '/includes/header.php';

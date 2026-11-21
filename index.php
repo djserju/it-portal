@@ -5,14 +5,14 @@ require_once __DIR__ . '/includes/header.php';
 ?>
 
 <!-- Home page hero section -->
-<div class="card" style="margin-bottom: 24px;">
+<div class="card hero-card">
     <h2>Welcome to the Department of Information Technology</h2>
-    <p style="margin: 10px 0 20px 0; color: #6b7280;">
+    <p>
         Serving students and faculty of the University of the Commonwealth Caribbean.
     </p>
-    <div>
+    <div class="hero-actions">
         <a href="courses.php" class="btn">Browse Courses</a>
-        <a href="admissions.php" class="btn" style="background-color: #6b7280; margin-left: 8px;">Admissions</a>
+        <a href="admissions.php" class="btn btn-secondary">Admissions</a>
     </div>
 </div>
 

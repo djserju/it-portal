@@ -1,11 +1,15 @@
 <?php
 require_once __DIR__ . '/../includes/auth_check.php';
 require_once __DIR__ . '/../config.php';
+require_once __DIR__ . '/../classes/Database.php';
+require_once __DIR__ . '/../classes/Course.php';
+require_once __DIR__ . '/../classes/Staff.php';
+require_once __DIR__ . '/../classes/Message.php';
 
-$pdo = db();
-$courseCount = $pdo->query('SELECT COUNT(*) FROM courses')->fetchColumn();
-$staffCount = $pdo->query('SELECT COUNT(*) FROM staff')->fetchColumn();
-$messageCount = $pdo->query('SELECT COUNT(*) FROM messages')->fetchColumn();
+$pdo = (new Database())->getConnection();
+$courseCount = (new Course($pdo))->count();
+$staffCount = (new Staff($pdo))->count();
+$messageCount = (new Message($pdo))->count();
 
 $pageTitle = 'Admin Dashboard';
 $basePath = '../';

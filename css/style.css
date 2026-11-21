@@ -65,10 +65,10 @@ a:hover {
     flex-wrap: wrap;
 }
 
-.nav-list {
-    list-style: none;
-    display: flex;
-    flex-wrap: wrap;
+.nav-list a {
+    display: block;
+    padding: 12px 14px;
+    color: #fff;
 }
 
 .nav-list a:hover,
@@ -78,6 +78,23 @@ a:hover {
 
 .nav-right {
     margin-left: auto;
+}
+
+.brand-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #fff;
+}
+
+.brand-badge {
+    display: grid;
+    width: 48px;
+    height: 48px;
+    place-items: center;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    font-weight: bold;
 }
 
 /* Main content & cards */
@@ -232,4 +249,81 @@ textarea.form-control {
     text-align: center;
     padding: 15px 0;
     font-size: 0.9rem;
+}
+
+.hero-card {
+    margin-bottom: 24px;
+}
+
+.hero-card p {
+    margin: 10px 0 20px 0;
+    color: #6b7280;
+}
+
+.hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.hero-actions .btn-secondary {
+    background-color: #6b7280;
+}
+
+/* Small phone screens */
+@media (max-width: 600px) {
+    .container {
+        padding: 12px;
+    }
+
+    .site-header {
+        padding: 12px 0;
+    }
+
+    .site-header h1 {
+        font-size: 1.1rem;
+    }
+
+    .brand-badge {
+        width: 40px;
+        height: 40px;
+        flex: 0 0 40px;
+    }
+
+    .nav-list {
+        display: block;
+    }
+
+    .nav-list a {
+        padding: 10px 12px;
+    }
+
+    .nav-right {
+        margin-left: 0;
+    }
+
+    .grid-3,
+    .staff-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .card {
+        padding: 15px;
+    }
+
+    table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    .btn {
+        max-width: 100%;
+        margin: 4px 0;
+        text-align: center;
+    }
+
+    .hero-actions {
+        display: block;
+    }
 }

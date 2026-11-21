@@ -1,10 +1,11 @@
 <?php
 require_once __DIR__ . '/../includes/auth_check.php';
 require_once __DIR__ . '/../config.php';
+require_once __DIR__ . '/../classes/Database.php';
+require_once __DIR__ . '/../classes/Message.php';
 
-$pdo = db();
-$stmt = $pdo->query('SELECT * FROM messages ORDER BY created_at DESC');
-$messages = $stmt->fetchAll();
+$pdo = (new Database())->getConnection();
+$messages = (new Message($pdo))->all();
 
 $pageTitle = 'Contact Messages';
 $basePath = '../';

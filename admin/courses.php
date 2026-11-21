@@ -1,8 +1,11 @@
 <?php
 require_once __DIR__ . '/../includes/auth_check.php';
 require_once __DIR__ . '/../config.php';
+require_once __DIR__ . '/../classes/Database.php';
+require_once __DIR__ . '/../classes/Course.php';
 
-$pdo = db();
+$pdo = (new Database())->getConnection();
+$courseModel = new Course($pdo);
 $error = '';
 $success = '';
 $editId = 0;
@@ -29,35 +32,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save'])) {
         $error = 'Credits must be a whole number from 1 to 4.';
     } else {
         // Check for duplicate course codes
-        if ($editId > 0) {
-            $check = $pdo->prepare('SELECT id FROM courses WHERE code = :code AND id != :id');
-            $check->execute(['code' => $code, 'id' => $editId]);
-        } else {
-            $check = $pdo->prepare('SELECT id FROM courses WHERE code = :code');
-            $check->execute(['code' => $code]);
-        }
-
-        if ($check->fetch()) {
+        if ($courseModel->codeExists($code, $editId > 0 ? $editId : null)) {
             $error = 'That course code is already used.';
         } else {
             if ($editId > 0) {
-                $sql = 'UPDATE courses SET code=:code, name=:name, credits=:credits,
-                        prerequisites=:prerequisites, description=:description WHERE id=:id';
-                $stmt = $pdo->prepare($sql);
-                $stmt->execute([
+                $courseModel->update($editId, [
                     'code' => $code,
                     'name' => $name,
                     'credits' => (int) $credits,
                     'prerequisites' => $prerequisites === '' ? null : $prerequisites,
-                    'description' => $description,
-                    'id' => $editId
+                    'description' => $description
                 ]);
                 $success = 'Course updated.';
             } else {
-                $sql = 'INSERT INTO courses (code, name, credits, prerequisites, description)
-                        VALUES (:code, :name, :credits, :prerequisites, :description)';
-                $stmt = $pdo->prepare($sql);
-                $stmt->execute([
+                $courseModel->create([
                     'code' => $code,
                     'name' => $name,
                     'credits' => (int) $credits,
@@ -80,14 +68,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save'])) {
 // First delete step asks for confirmation
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
     $deleteId = isset($_POST['id']) && is_numeric($_POST['id']) ? (int) $_POST['id'] : 0;
-    $stmt = $pdo->prepare('SELECT * FROM courses WHERE id = :id');
-    $stmt->execute(['id' => $deleteId]);
-    $courseToDelete = $stmt->fetch();
+    $courseToDelete = $courseModel->find($deleteId);
 
     if ($courseToDelete) {
         if (isset($_POST['confirm']) && $_POST['confirm'] === 'yes') {
-            $stmt = $pdo->prepare('DELETE FROM courses WHERE id = :id');
-            $stmt->execute(['id' => $deleteId]);
+            $courseModel->delete($deleteId);
             $success = 'Course deleted.';
         } else {
             $confirmCourse = $courseToDelete;
@@ -100,9 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
 // Load a course into the form when Edit is clicked
 if (isset($_GET['edit'])) {
     $editId = (int) $_GET['edit'];
-    $stmt = $pdo->prepare('SELECT * FROM courses WHERE id = :id');
-    $stmt->execute(['id' => $editId]);
-    $course = $stmt->fetch();
+    $course = $courseModel->find($editId);
 
     if ($course) {
         $code = $course['code'];
@@ -113,7 +96,7 @@ if (isset($_GET['edit'])) {
     }
 }
 
-$courses = $pdo->query('SELECT * FROM courses ORDER BY code ASC')->fetchAll();
+$courses = $courseModel->all();
 
 $pageTitle = 'Manage Courses';
 $basePath = '../';

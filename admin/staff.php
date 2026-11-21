@@ -1,8 +1,11 @@
 <?php
 require_once __DIR__ . '/../includes/auth_check.php';
 require_once __DIR__ . '/../config.php';
+require_once __DIR__ . '/../classes/Database.php';
+require_once __DIR__ . '/../classes/Staff.php';
 
-$pdo = db();
+$pdo = (new Database())->getConnection();
+$staffModel = new Staff($pdo);
 $error = '';
 $success = '';
 $name = '';
@@ -13,14 +16,11 @@ $email = '';
 // Delete a staff member after confirmation
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
     $id = isset($_POST['id']) && is_numeric($_POST['id']) ? (int) $_POST['id'] : 0;
-    $stmt = $pdo->prepare('SELECT * FROM staff WHERE id = :id');
-    $stmt->execute(['id' => $id]);
-    $person = $stmt->fetch();
+    $person = $staffModel->find($id);
 
     if ($person) {
         if (isset($_POST['confirm']) && $_POST['confirm'] === 'yes') {
-            $stmt = $pdo->prepare('DELETE FROM staff WHERE id = :id');
-            $stmt->execute(['id' => $id]);
+            $staffModel->delete($id);
 
             if ($person['photo']) {
                 $photo = basename($person['photo']);
@@ -87,12 +87,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add'])) {
 
         // Save the database record only after the photo succeeds
         if ($error === '') {
-            $sql = 'INSERT INTO staff (name, position, phone, email, photo)
-                    VALUES (:name, :position, :phone, :email, :photo)';
-            $stmt = $pdo->prepare($sql);
-
             try {
-                $stmt->execute([
+                $staffModel->create([
                     'name' => $name,
                     'position' => $position,
                     'phone' => $phone,
@@ -114,7 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add'])) {
     }
 }
 
-$staff = $pdo->query('SELECT * FROM staff ORDER BY id ASC')->fetchAll();
+$staff = $staffModel->all();
 
 $pageTitle = 'Manage Staff';
 $basePath = '../';

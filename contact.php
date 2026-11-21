@@ -1,11 +1,18 @@
 <?php
 require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/classes/Database.php';
+require_once __DIR__ . '/classes/Message.php';
 
 $name = '';
 $email = '';
 $subject = '';
 $messageText = '';
-$error = '';
+$errors = [
+    'name' => '',
+    'email' => '',
+    'subject' => '',
+    'message' => ''
+];
 $success = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -14,15 +21,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $subject = isset($_POST['subject']) && is_string($_POST['subject']) ? trim($_POST['subject']) : '';
     $messageText = isset($_POST['message']) && is_string($_POST['message']) ? trim($_POST['message']) : '';
 
-    if ($name === '' || $email === '' || $subject === '' || $messageText === '') {
-        $error = 'Please fill in every field.';
+    if ($name === '') {
+        $errors['name'] = 'Name is required.';
+    }
+    if ($email === '') {
+        $errors['email'] = 'Email is required.';
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $error = 'Please enter a valid email address.';
+        $errors['email'] = 'Enter a valid email address.';
+    }
+    if ($subject === '') {
+        $errors['subject'] = 'Subject is required.';
+    }
+    if ($messageText === '') {
+        $errors['message'] = 'Message is required.';
     } else {
-        $pdo = db();
-        $sql = 'INSERT INTO messages (name, email, subject, message) VALUES (:name, :email, :subject, :message)';
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute([
+        $length = mb_strlen($messageText, 'UTF-8');
+        if ($length < 10 || $length > 1000) {
+            $errors['message'] = 'Message must be between 10 and 1,000 characters.';
+        }
+    }
+
+    if (!array_filter($errors)) {
+        $pdo = (new Database())->getConnection();
+        (new Message($pdo))->create([
             'name' => $name,
             'email' => $email,
             'subject' => $subject,
@@ -43,9 +64,6 @@ require_once __DIR__ . '/includes/header.php';
 
 <h1>Contact the HOD</h1>
 
-<?php if ($error !== ''): ?>
-    <p class="alert alert-error"><?= h($error) ?></p>
-<?php endif; ?>
 <?php if ($success !== ''): ?>
     <p class="alert alert-success"><?= h($success) ?></p>
 <?php endif; ?>
@@ -54,18 +72,22 @@ require_once __DIR__ . '/includes/header.php';
     <div class="form-group">
         <label>Name</label>
         <input class="form-control" type="text" name="name" value="<?= h($name) ?>" required>
+        <?php if ($errors['name'] !== ''): ?><span class="field-error"><?= h($errors['name']) ?></span><?php endif; ?>
     </div>
     <div class="form-group">
         <label>Email</label>
         <input class="form-control" type="email" name="email" value="<?= h($email) ?>" required>
+        <?php if ($errors['email'] !== ''): ?><span class="field-error"><?= h($errors['email']) ?></span><?php endif; ?>
     </div>
     <div class="form-group">
         <label>Subject</label>
         <input class="form-control" type="text" name="subject" value="<?= h($subject) ?>" required>
+        <?php if ($errors['subject'] !== ''): ?><span class="field-error"><?= h($errors['subject']) ?></span><?php endif; ?>
     </div>
     <div class="form-group">
         <label>Message</label>
         <textarea class="form-control" name="message" required><?= h($messageText) ?></textarea>
+        <?php if ($errors['message'] !== ''): ?><span class="field-error"><?= h($errors['message']) ?></span><?php endif; ?>
     </div>
     <button class="btn" type="submit">Send Message</button>
 </form>

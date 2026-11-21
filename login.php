@@ -1,5 +1,7 @@
 <?php
 require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/classes/Database.php';
+require_once __DIR__ . '/classes/User.php';
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -37,11 +39,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($email === '' || $password === '') {
         $error = 'The email or password entered is incorrect.';
     } else {
-        $pdo = db();
-        $sql = 'SELECT * FROM users WHERE email = :email LIMIT 1';
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute(['email' => $email]);
-        $user = $stmt->fetch();
+        $pdo = (new Database())->getConnection();
+        $user = (new User($pdo))->findByEmail($email);
 
         if ($user && password_verify($password, $user['password_hash'])) {
             session_regenerate_id(true);
