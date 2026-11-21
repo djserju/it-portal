@@ -1,6 +1,5 @@
 <?php
 // Database settings for XAMPP
-// The h() function below is used to escape output in HTML
 define('DB_HOST', 'localhost');
 define('DB_NAME', 'itportal');
 define('DB_USER', 'root');
@@ -13,6 +12,6 @@ function h($text)
     if (is_array($text) || is_object($text)) {
         return '';
     }
-
+    
     return htmlspecialchars((string) $text, ENT_QUOTES, 'UTF-8');
 }
