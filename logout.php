@@ -3,6 +3,7 @@
 session_start();
 
 # Wipes all session variables stored in memory
+session_unset();
 $_SESSION = [];
 
 # Checks if the application uses cookies 

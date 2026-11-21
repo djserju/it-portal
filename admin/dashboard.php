@@ -32,6 +32,7 @@ $staffEmail = $_SESSION['user_email'] ?? '';
 
 # Sets page title and renders shared layout header
 $pageTitle = 'Admin Dashboard - IT Department Portal';
+$basePath = '../';
 require_once __DIR__ . '/../includes/header.php';
 ?>
 

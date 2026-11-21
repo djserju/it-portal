@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     # Validates inputs and verifies user credentials against the database
     if ($email === '' || $password === '') {
-        $errorMessage = 'Please enter your email and password.';
+        $errorMessage = 'The email or password entered is incorrect.';
     } else {
         $sql = "SELECT id, name, email, password_hash
                 FROM users
