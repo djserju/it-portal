@@ -6,8 +6,8 @@ if (session_status() === PHP_SESSION_NONE) {
 
 # Helper function to safely escape output using htmlspecialchars()
 if (!function_exists('e')) {
-    function e(?string $value): string {
-        return htmlspecialchars($value ?? '', ENT_QUOTES);
+    function e(mixed $value): string {
+        return htmlspecialchars((string) ($value ?? ''), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
     }
 }
 

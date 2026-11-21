@@ -21,8 +21,8 @@ $rememberEmail = false;
 
 # Processes form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $email = trim($_POST['email'] ?? '');
-    $password = $_POST['password'] ?? '';
+    $email = is_string($_POST['email'] ?? null) ? trim($_POST['email']) : '';
+    $password = is_string($_POST['password'] ?? null) ? $_POST['password'] : '';
     $rememberEmail = isset($_POST['remember_email']);
     
     # Saves or clears the remembered email cookie for 30 days
@@ -74,7 +74,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 } else {
     // Load previously saved email if available
-    $email = $_COOKIE['remember_email'] ?? '';
+    $email = isset($_COOKIE['remember_email']) && is_string($_COOKIE['remember_email'])
+        ? $_COOKIE['remember_email']
+        : '';
     $rememberEmail = ($email !== '');
 }
 
