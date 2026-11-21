@@ -1,5 +1,6 @@
 <?php
-
+// Message database class
+// Message database functions
 class Message
 {
     private $db;
@@ -11,6 +12,8 @@ class Message
 
     public function all()
     {
+        // Get messages in newest-first order
+        // Newest messages come first
         $stmt = $this->db->prepare('SELECT * FROM messages ORDER BY created_at DESC');
         $stmt->execute();
         return $stmt->fetchAll();
@@ -18,6 +21,8 @@ class Message
 
     public function create($data)
     {
+        // Insert one contact form message
+        // Save one contact form submission with prepared values
         $sql = 'INSERT INTO messages (name, email, subject, message)
                 VALUES (:name, :email, :subject, :message)';
         $stmt = $this->db->prepare($sql);
@@ -31,6 +36,8 @@ class Message
 
     public function count()
     {
+        // Count messages for the admin summary
+        // Count messages for the dashboard
         $stmt = $this->db->prepare('SELECT COUNT(*) FROM messages');
         $stmt->execute();
         return (int) $stmt->fetchColumn();

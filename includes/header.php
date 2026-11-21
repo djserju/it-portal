@@ -1,9 +1,10 @@
 <?php
-// Start the session and use a default title
+// Start the session for this page
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+// Use the page title supplied by the PHP page
 $pageTitle = isset($pageTitle) ? $pageTitle : 'UCC IT Department Portal';
 $basePath = isset($basePath) ? $basePath : '';
 ?>
@@ -31,7 +32,7 @@ $basePath = isset($basePath) ? $basePath : '';
         </div>
     </header>
     
-    <!-- Include the shared navigation bar -->
+    <!-- Load the shared navigation bar -->
     <?php require __DIR__ . '/nav.php'; ?>
     
     <!-- Main page content wrapper (closed in footer.php) -->

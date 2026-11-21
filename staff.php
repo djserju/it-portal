@@ -1,22 +1,28 @@
 <?php
+// Public page that lists department staff
 require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/classes/Database.php';
 require_once __DIR__ . '/classes/Staff.php';
 
+// Load staff for the public staff page
 $pdo = (new Database())->getConnection();
 $staff = (new Staff($pdo))->all();
 
+// Set the staff directory title
 $pageTitle = 'Department Staff';
 require_once __DIR__ . '/includes/header.php';
 ?>
 
 <h1>Department Staff</h1>
 
+<!-- Show each staff member in a card -->
 <?php if (count($staff) === 0): ?>
     <p>No staff available.</p>
 <?php else: ?>
+    <!-- Each staff member gets a photo and details card -->
     <div class="staff-grid">
         <?php foreach ($staff as $person): ?>
+            <!-- Staff directory card -->
             <?php
             $photo = $person['photo'] ? basename($person['photo']) : '';
             $photoExists = $photo !== '' && file_exists(__DIR__ . '/uploads/' . $photo);
@@ -36,4 +42,5 @@ require_once __DIR__ . '/includes/header.php';
     </div>
 <?php endif; ?>
 
+<!-- Shared footer -->
 <?php require_once __DIR__ . '/includes/footer.php'; ?>

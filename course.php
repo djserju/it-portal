@@ -1,19 +1,23 @@
 <?php
+// Public page that shows one course
 require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/classes/Database.php';
 require_once __DIR__ . '/classes/Course.php';
 
+// Course ids must be numbers
 $id = isset($_GET['id']) && is_string($_GET['id']) && is_numeric($_GET['id'])
     ? (int) $_GET['id']
     : 0;
 $pdo = (new Database())->getConnection();
 $course = $id > 0 ? (new Course($pdo))->find($id) : null;
 
+// Set the title and load the shared header
 $pageTitle = 'Course Details';
 require_once __DIR__ . '/includes/header.php';
 ?>
 
 <div class="card">
+    <!-- Missing or wrong ids get a helpful message -->
     <?php if (!isset($_GET['id']) || $_GET['id'] === ''): ?>
         <h2>Please choose a course</h2>
         <p>A course id is missing. Please select a course from the course list.</p>
@@ -21,6 +25,7 @@ require_once __DIR__ . '/includes/header.php';
         <h2>Course not found</h2>
         <p>That course does not exist. Please select another course from the list.</p>
     <?php else: ?>
+        <!-- Show the course details -->
         <h2><?= h($course['code']) ?> - <?= h($course['name']) ?></h2>
         <p><strong>Credits:</strong> <?= h($course['credits']) ?></p>
         <p><strong>Prerequisites:</strong> <?= h($course['prerequisites'] ? $course['prerequisites'] : 'None') ?></p>
@@ -29,4 +34,5 @@ require_once __DIR__ . '/includes/header.php';
     <p><a class="btn" href="courses.php">Back</a></p>
 </div>
 
+<!-- Shared footer -->
 <?php require_once __DIR__ . '/includes/footer.php'; ?>

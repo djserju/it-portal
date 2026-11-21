@@ -1,4 +1,5 @@
 <?php
+// Admin page for adding and deleting staff
 require_once __DIR__ . '/../includes/auth_check.php';
 require_once __DIR__ . '/../config.php';
 require_once __DIR__ . '/../classes/Database.php';
@@ -20,8 +21,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
 
     if ($person) {
         if (isset($_POST['confirm']) && $_POST['confirm'] === 'yes') {
+            // Remove the staff record first
             $staffModel->delete($id);
 
+            // Then remove the matching photo from the uploads folder
             if ($person['photo']) {
                 $photo = basename($person['photo']);
                 $path = __DIR__ . '/../uploads/' . $photo;
@@ -60,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add'])) {
         } elseif (!is_uploaded_file($_FILES['photo']['tmp_name'])) {
             $error = 'The photo upload could not be verified.';
         } else {
-            // Check the real file type
+            // Check the real file type, not only the file name
             $info = finfo_open(FILEINFO_MIME_TYPE);
             $mime = finfo_file($info, $_FILES['photo']['tmp_name']);
             finfo_close($info);
@@ -76,6 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add'])) {
             if ($extension === '') {
                 $error = 'Only JPG and PNG photos are accepted.';
             } else {
+                // Give the uploaded photo a different file name
                 $photoName = 'staff_' . time() . '_' . bin2hex(random_bytes(8)) . '.' . $extension;
                 $target = __DIR__ . '/../uploads/' . $photoName;
 
@@ -118,6 +122,7 @@ require_once __DIR__ . '/../includes/header.php';
 ?>
 
 <div class="card">
+    <!-- Add staff fields and photo upload -->
     <h2>Add Staff Member</h2>
     <?php if ($error): ?><p class="alert alert-error"><?= h($error) ?></p><?php endif; ?>
     <?php if ($success): ?><p class="alert alert-success"><?= h($success) ?></p><?php endif; ?>
@@ -149,6 +154,7 @@ require_once __DIR__ . '/../includes/header.php';
 </div>
 
 <?php if (isset($confirmPerson)): ?>
+    <!-- Ask the user before deleting a staff member -->
     <div class="card">
         <h3>Confirm Delete</h3>
         <p>Delete <?= h($confirmPerson['name']) ?>?</p>
@@ -167,6 +173,7 @@ require_once __DIR__ . '/../includes/header.php';
     <table>
         <tr><th>Photo</th><th>Name</th><th>Position</th><th>Phone</th><th>Email</th><th>Action</th></tr>
         <?php foreach ($staff as $person): ?>
+            <!-- Staff row with delete action -->
             <?php
             $photo = $person['photo'] ? basename($person['photo']) : '';
             $hasPhoto = $photo !== '' && file_exists(__DIR__ . '/../uploads/' . $photo);

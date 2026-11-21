@@ -1,12 +1,13 @@
 <?php
-
-// Handles the database connection
+// Database connection class
+// Creates the database connection
 class Database
 {
     private $pdo;
 
     public function __construct()
     {
+        // Build the connection once for this object
         $dsn = 'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME . ';charset=utf8mb4';
 
         $this->pdo = new PDO($dsn, DB_USER, DB_PASS, [
@@ -17,6 +18,7 @@ class Database
 
     public function getConnection()
     {
+        // Other classes use this same PDO connection
         return $this->pdo;
     }
 }

@@ -1,4 +1,5 @@
 <?php
+// Contact form page for sending a message to the HOD
 require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/classes/Database.php';
 require_once __DIR__ . '/classes/Message.php';
@@ -15,12 +16,14 @@ $errors = [
 ];
 $success = '';
 
+// Check the form after the user submits it
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = isset($_POST['name']) && is_string($_POST['name']) ? trim($_POST['name']) : '';
     $email = isset($_POST['email']) && is_string($_POST['email']) ? trim($_POST['email']) : '';
     $subject = isset($_POST['subject']) && is_string($_POST['subject']) ? trim($_POST['subject']) : '';
     $messageText = isset($_POST['message']) && is_string($_POST['message']) ? trim($_POST['message']) : '';
 
+    // Check each field separately so the user knows what to fix
     if ($name === '') {
         $errors['name'] = 'Name is required.';
     }
@@ -35,6 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($messageText === '') {
         $errors['message'] = 'Message is required.';
     } else {
+        // Messages must be 10 to 1,000 characters long
         $length = mb_strlen($messageText, 'UTF-8');
         if ($length < 10 || $length > 1000) {
             $errors['message'] = 'Message must be between 10 and 1,000 characters.';
@@ -42,6 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if (!array_filter($errors)) {
+        // Save the message if every check passed
         $pdo = (new Database())->getConnection();
         (new Message($pdo))->create([
             'name' => $name,
@@ -69,6 +74,7 @@ require_once __DIR__ . '/includes/header.php';
 <?php endif; ?>
 
 <form method="post" action="contact.php">
+    <!-- Keep valid and invalid values in the fields after submitting -->
     <div class="form-group">
         <label>Name</label>
         <input class="form-control" type="text" name="name" value="<?= h($name) ?>" required>

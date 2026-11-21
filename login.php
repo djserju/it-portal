@@ -1,13 +1,16 @@
 <?php
+// Staff login page
 require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/classes/Database.php';
 require_once __DIR__ . '/classes/User.php';
 
 if (session_status() === PHP_SESSION_NONE) {
+    // Start the session if it is not already active
     session_start();
 }
 
 if (isset($_SESSION['user_id'])) {
+    // Already logged-in users go straight to the dashboard
     header('Location: admin/dashboard.php');
     exit;
 }
@@ -16,6 +19,7 @@ $error = '';
 $email = '';
 $remember = false;
 
+// Check the login form
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = isset($_POST['email']) && is_string($_POST['email']) ? trim($_POST['email']) : '';
     $password = isset($_POST['password']) && is_string($_POST['password']) ? $_POST['password'] : '';
@@ -36,10 +40,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ]);
     }
 
+    // Do not say whether the email or password was wrong
     if ($email === '' || $password === '') {
         $error = 'The email or password entered is incorrect.';
     } else {
         $pdo = (new Database())->getConnection();
+        // Find the user with the submitted email
         $user = (new User($pdo))->findByEmail($email);
 
         if ($user && password_verify($password, $user['password_hash'])) {
@@ -73,6 +79,7 @@ require_once __DIR__ . '/includes/header.php';
     <?php endif; ?>
 
     <form action="login.php" method="post">
+        <!-- Login fields -->
         <div class="form-group">
             <label>Email</label>
             <input class="form-control" type="email" name="email" value="<?= h($email) ?>" required>

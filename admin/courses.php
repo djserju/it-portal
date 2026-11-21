@@ -1,4 +1,5 @@
 <?php
+// Admin page for adding, editing and deleting courses
 require_once __DIR__ . '/../includes/auth_check.php';
 require_once __DIR__ . '/../config.php';
 require_once __DIR__ . '/../classes/Database.php';
@@ -24,6 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save'])) {
     $prerequisites = isset($_POST['prerequisites']) && is_string($_POST['prerequisites']) ? trim($_POST['prerequisites']) : '';
     $description = isset($_POST['description']) && is_string($_POST['description']) ? trim($_POST['description']) : '';
 
+    // Check the course code format
     if (!preg_match('/^[A-Z]{3}[0-9]{3}$/', $code)) {
         $error = 'Course code must be three uppercase letters followed by three digits.';
     } elseif ($name === '' || $description === '') {
@@ -31,11 +33,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save'])) {
     } elseif (!preg_match('/^[1-4]$/', $credits)) {
         $error = 'Credits must be a whole number from 1 to 4.';
     } else {
-        // Check for duplicate course codes
+        // Check for duplicate course codes, ignoring the course being edited
         if ($courseModel->codeExists($code, $editId > 0 ? $editId : null)) {
             $error = 'That course code is already used.';
         } else {
             if ($editId > 0) {
+                // Update this course in the database
                 $courseModel->update($editId, [
                     'code' => $code,
                     'name' => $name,
@@ -45,6 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save'])) {
                 ]);
                 $success = 'Course updated.';
             } else {
+                // Add a new course
                 $courseModel->create([
                     'code' => $code,
                     'name' => $name,
@@ -72,6 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
 
     if ($courseToDelete) {
         if (isset($_POST['confirm']) && $_POST['confirm'] === 'yes') {
+            // The second POST means the user confirmed deletion
             $courseModel->delete($deleteId);
             $success = 'Course deleted.';
         } else {
@@ -104,6 +109,7 @@ require_once __DIR__ . '/../includes/header.php';
 ?>
 
 <div class="card">
+    <!-- Add or edit course fields -->
     <h2><?= $editId ? 'Edit Course' : 'Add Course' ?></h2>
     <?php if ($error): ?><p class="alert alert-error"><?= h($error) ?></p><?php endif; ?>
     <?php if ($success): ?><p class="alert alert-success"><?= h($success) ?></p><?php endif; ?>
@@ -137,6 +143,7 @@ require_once __DIR__ . '/../includes/header.php';
 </div>
 
 <?php if (isset($confirmCourse)): ?>
+    <!-- Show one extra step before deleting -->
     <div class="card">
         <h3>Confirm Delete</h3>
         <p>Delete <?= h($confirmCourse['code']) ?> - <?= h($confirmCourse['name']) ?>?</p>
@@ -155,6 +162,7 @@ require_once __DIR__ . '/../includes/header.php';
     <table>
         <tr><th>Code</th><th>Name</th><th>Credits</th><th>Prerequisites</th><th>Actions</th></tr>
         <?php foreach ($courses as $course): ?>
+            <!-- One course row with edit and delete actions -->
             <tr>
                 <td><?= h($course['code']) ?></td>
                 <td><?= h($course['name']) ?></td>

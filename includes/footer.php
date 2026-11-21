@@ -1,5 +1,5 @@
 <?php
-// Close the page layout
+// Close the layout opened in header.php
 ?>
     </main>
 

@@ -1,15 +1,17 @@
 <?php
+// Home page for the IT Department website
 require_once __DIR__ . '/config.php';
 $pageTitle = 'Home';
 require_once __DIR__ . '/includes/header.php';
 ?>
 
-<!-- Home page hero section -->
+<!-- Welcome area -->
 <div class="card hero-card">
     <h2>Welcome to the Department of Information Technology</h2>
     <p>
         Serving students and faculty of the University of the Commonwealth Caribbean.
     </p>
+    <!-- Quick public links -->
     <div class="hero-actions">
         <a href="courses.php" class="btn">Browse Courses</a>
         <a href="admissions.php" class="btn btn-secondary">Admissions</a>
@@ -48,6 +50,6 @@ require_once __DIR__ . '/includes/header.php';
 </div>
 
 <?php
-# Includes the global footer template
+// Load the shared footer
 require_once __DIR__ . '/includes/footer.php';
 ?>

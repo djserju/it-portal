@@ -1,10 +1,11 @@
 <?php
+// Admission requirements page
 require_once __DIR__ . '/config.php';
 $pageTitle = 'Admissions';
 require_once __DIR__ . '/includes/header.php';
 ?>
 
-<!-- Admissions requirements section -->
+<!-- Admission information -->
 <div class="card">
     <h2>Undergraduate Admission Requirements</h2>
     <p>UCC's published requirements for Jamaican applicants to undergraduate programmes include:</p>
@@ -13,6 +14,7 @@ require_once __DIR__ . '/includes/header.php';
         <li>Applicants with four CSEC subjects may apply while completing outstanding subjects or UCC replacement courses in Core Mathematics, English for Academic Purposes and Fundamentals of Accounting.</li>
         <li>Mature-entry applicants must be at least 25 years old and have at least five years of work experience. UCC requests academic qualifications, a résumé, a job letter and three professional references.</li>
     </ul>
+    <!-- Link to the official UCC requirements and application pages -->
     <p>
         Requirements may vary by programme. Review UCC's current
         <a href="https://ucc.edu.jm/programmes/undergraduate/requirements" target="_blank" rel="noopener noreferrer">undergraduate admission requirements</a>
@@ -22,6 +24,6 @@ require_once __DIR__ . '/includes/header.php';
 </div>
 
 <?php
-# Includes the global footer template
+// Load the shared footer
 require_once __DIR__ . '/includes/footer.php';
 ?>

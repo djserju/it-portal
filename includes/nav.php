@@ -1,5 +1,5 @@
 <?php
-// This navigation is included on public and admin pages
+// Navigation used by public and admin pages
 $currentPage = basename($_SERVER['PHP_SELF']);
 $basePath = isset($basePath) ? $basePath : '';
 ?>
@@ -34,8 +34,9 @@ $basePath = isset($basePath) ? $basePath : '';
                 </a>
             </li>
         
-        <!-- Shows dashboard & logout if logged in --> 
+        <!-- Show dashboard and logout when logged in -->
         <?php if (!empty($_SESSION['user_id'])): ?>
+            <!-- Logged-in admin links -->
             <li class ="nav-right">
                 <a href="<?= h($basePath) ?>admin/dashboard.php" class="<?= $basePath === '../' ? 'active' : '' ?>">
                     Admin Dashboard

@@ -4,6 +4,7 @@
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
+-- Create and select the application database
 CREATE DATABASE IF NOT EXISTS itportal
   CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 USE itportal;
@@ -13,6 +14,7 @@ DROP TABLE IF EXISTS messages;
 DROP TABLE IF EXISTS staff;
 DROP TABLE IF EXISTS courses;
 
+-- Course records
 CREATE TABLE courses (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     code VARCHAR(25) NOT NULL UNIQUE,
@@ -23,6 +25,7 @@ CREATE TABLE courses (
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Staff profiles and photo file names
 CREATE TABLE staff (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -32,6 +35,7 @@ CREATE TABLE staff (
     photo VARCHAR(255) NOT NULL
 );
 
+-- Contact form submissions
 CREATE TABLE messages (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -41,6 +45,7 @@ CREATE TABLE messages (
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Administrator login accounts
 CREATE TABLE users (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,

@@ -1,5 +1,5 @@
 <?php
-// Stop anyone who is not logged in
+// Send a visitor to login when they are not logged in
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }

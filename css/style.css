@@ -1,5 +1,6 @@
-/* IT Portal Stylesheet */
-/* Base Reset & Variables */
+/* IT Department Portal stylesheet */
+
+/* Color and border values */
 :root {
     --primary: #0f2942;
     --accent: #d4a017;
@@ -9,12 +10,14 @@
     --border: #e5e7eb;
 }
 
+/* Reset */
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
+/* Body */
 body {
     font-family: sans-serif;
     background-color: var(--bg-body);
@@ -22,23 +25,25 @@ body {
     line-height: 1.6;
 }
 
+/* Links */
 a {
     color: var(--primary);
     text-decoration: none;
 }
 
+/* Link hover */
 a:hover {
     text-decoration: underline;
 }
 
-/* Layout Container*/
+/* Container */
 .container {
     max-width: 1100px;
     margin: 0 auto;
     padding: 20px;
 }
 
-/* Header & Navigation */
+/* Header */
 .site-header {
     background-color: var(--primary);
     color: #fff;
@@ -46,40 +51,48 @@ a:hover {
     border-bottom: 4px solid var(--accent);
 }
 
+/* Department title */
 .site-header h1 {
     font-size: 1.4rem;
 }
 
+/* Tagline */
 .tagline {
     font-size: 0.85rem;
     color: #cbd5e1;
 }
 
+/* Navigation */
 .site-nav {
     background-color: #1a3f63;
 }
 
+/* Navigation list */
 .nav-list {
     list-style: none;
     display: flex;
     flex-wrap: wrap;
 }
 
+/* Navigation links */
 .nav-list a {
     display: block;
     padding: 12px 14px;
     color: #fff;
 }
 
+/* Navigation active and hover */
 .nav-list a:hover,
 .nav-list a.active {
     background-color: rgba(255, 255, 255, 0.15);
 }
 
+/* Right navigation */
 .nav-right {
     margin-left: auto;
 }
 
+/* Brand link */
 .brand-link {
     display: flex;
     align-items: center;
@@ -87,6 +100,7 @@ a:hover {
     color: #fff;
 }
 
+/* Brand badge */
 .brand-badge {
     display: grid;
     width: 48px;
@@ -97,12 +111,13 @@ a:hover {
     font-weight: bold;
 }
 
-/* Main content & cards */
+/* Main content */
 .main-content {
     padding: 30px 0;
     min-height: 70vh;
 }
 
+/* Cards */
 .card {
     background-color: var(--bg-card);
     border: 1px solid var(--border);
@@ -111,19 +126,21 @@ a:hover {
     margin-bottom: 20px;
 }
 
+/* Home page grid */
 .grid-3 {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 20px;
 }
 
-/* Staff directory & photos */
+/* Staff grid */
 .staff-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     gap: 20px;
 }
 
+/* Staff card */
 .staff-card {
     background-color: var(--bg-card);
     border: 1px solid var(--border);
@@ -131,6 +148,7 @@ a:hover {
     padding: 20px;
 }
 
+/* Staff photo */
 .staff-photo {
     width: 100px;
     height: 100px;
@@ -140,6 +158,7 @@ a:hover {
     margin-bottom: 10px;
 }
 
+/* Staff photo placeholder */
 .staff-photo-placeholder {
     display: grid;
     width: 100px;
@@ -161,11 +180,13 @@ a:hover {
     cursor: pointer;
 }
 
+/* Button hover */
 .btn:hover {
     background-color: #1a3f63;
     text-decoration: none;
 }
 
+/* Danger button */
 .btn-danger {
     background-color: #dc2626;
 }
@@ -178,28 +199,33 @@ table {
     margin-bottom: 20px;
 }
 
-th, td {
+/* Table cells */
+th,
+td {
     padding: 12px;
     border-bottom: 1px solid var(--border);
     text-align: left;
 }
 
+/* Table heading */
 th {
     background-color: #f8fafc;
     color: var(--primary);
 }
 
-/* Forms */
+/* Form group */
 .form-group {
     margin-bottom: 15px;
 }
 
+/* Form labels */
 .form-group label {
     display: block;
     font-weight: bold;
     margin-bottom: 5px;
 }
 
+/* Form controls */
 .form-control {
     width: 100%;
     padding: 8px 12px;
@@ -207,20 +233,24 @@ th {
     border-radius: 4px;
 }
 
+/* Invalid form control */
 .form-control.is-invalid {
     border-color: #991b1b;
 }
 
+/* Field error */
 .field-error {
     display: block;
     color: #991b1b;
     margin-top: 4px;
 }
 
+/* Empty field error */
 .field-error:empty {
     display: none;
 }
 
+/* Text area */
 textarea.form-control {
     min-height: 100px;
 }
@@ -232,11 +262,13 @@ textarea.form-control {
     margin-bottom: 15px;
 }
 
+/* Success alert */
 .alert-success {
     background-color: #dcfce7;
     color: #166534;
 }
 
+/* Error alert */
 .alert-error {
     background-color: #fee2e2;
     color: #991b1b;
@@ -251,78 +283,94 @@ textarea.form-control {
     font-size: 0.9rem;
 }
 
+/* Hero card */
 .hero-card {
     margin-bottom: 24px;
 }
 
+/* Hero paragraph */
 .hero-card p {
     margin: 10px 0 20px 0;
     color: #6b7280;
 }
 
+/* Hero actions */
 .hero-actions {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
 }
 
+/* Secondary hero button */
 .hero-actions .btn-secondary {
     background-color: #6b7280;
 }
 
-/* Small phone screens */
+/* Phone layout */
 @media (max-width: 600px) {
+    /* Container */
     .container {
         padding: 12px;
     }
 
+    /* Header */
     .site-header {
         padding: 12px 0;
     }
 
+    /* Department title */
     .site-header h1 {
         font-size: 1.1rem;
     }
 
+    /* Brand badge */
     .brand-badge {
         width: 40px;
         height: 40px;
         flex: 0 0 40px;
     }
 
+    /* Navigation list */
     .nav-list {
         display: block;
     }
 
+    /* Navigation links */
     .nav-list a {
         padding: 10px 12px;
     }
 
+    /* Right navigation */
     .nav-right {
         margin-left: 0;
     }
 
+    /* Home and staff grids */
     .grid-3,
     .staff-grid {
         grid-template-columns: 1fr;
     }
 
+    /* Cards */
     .card {
         padding: 15px;
     }
 
+    /* Tables */
     table {
         display: block;
         overflow-x: auto;
         white-space: nowrap;
     }
 
+    /* Buttons */
     .btn {
         max-width: 100%;
         margin: 4px 0;
         text-align: center;
     }
 
+    /* Hero actions */
     .hero-actions {
         display: block;
     }
