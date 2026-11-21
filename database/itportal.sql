@@ -29,9 +29,9 @@ CREATE TABLE IF NOT EXISTS staff (
     photo VARCHAR(255) DEFAULT NULL
 );
 
--- Messages table stores student inquiries submitted via the "Contact the HOD" form
+-- Messages table stores submissions from the "Contact the HOD" form
 -- 'created_at' automatically records the date and time each message is saved.
-CREATE TABLE IF NOT EXISTS inquiries (
+CREATE TABLE IF NOT EXISTS messages (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     email VARCHAR(120) NOT NULL,

@@ -101,12 +101,35 @@ a:hover {
 }
 
 /* Staff directory & photos */
+.staff-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+}
+
+.staff-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 20px;
+}
+
 .staff-photo {
     width: 100px;
     height: 100px;
     object-fit: cover;
     border-radius: 50%;
     border: 2px solid var(--accent);
+    margin-bottom: 10px;
+}
+
+.staff-photo-placeholder {
+    display: grid;
+    width: 100px;
+    height: 100px;
+    place-items: center;
+    border: 2px solid var(--border);
+    border-radius: 50%;
     margin-bottom: 10px;
 }
 
@@ -165,6 +188,20 @@ th {
     padding: 8px 12px;
     border: 1px solid var(--border);
     border-radius: 4px;
+}
+
+.form-control.is-invalid {
+    border-color: #991b1b;
+}
+
+.field-error {
+    display: block;
+    color: #991b1b;
+    margin-top: 4px;
+}
+
+.field-error:empty {
+    display: none;
 }
 
 textarea.form-control {

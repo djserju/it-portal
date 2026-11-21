@@ -4,12 +4,15 @@ require_once __DIR__ . '/../includes/auth_check.php';
 
 # Includes database configuration and PDO connection
 require_once __DIR__ . '/../config.php';
+require_once __DIR__ . '/../classes/database.php';
+
+$pdo = (new Database())->getConnection();
 
 # Loads summary counts for departmental records
 $counts = [
     'courses' => 0,
     'staff' => 0,
-    'inquiries' => 0,
+    'messages' => 0,
     'users' => 0,
 ];
 
@@ -17,7 +20,7 @@ try {
     # Queries total records across core tables
     $counts['courses'] = (int) $pdo->query("SELECT COUNT(*) FROM courses")-> fetchColumn();
     $counts['staff'] = (int) $pdo->query("SELECT COUNT(*) FROM staff")-> fetchColumn();
-    $counts['inquiries'] = (int) $pdo->query("SELECT COUNT(*) FROM inquiries")-> fetchColumn();
+    $counts['messages'] = (int) $pdo->query("SELECT COUNT(*) FROM messages")->fetchColumn();
     $counts['users'] = (int) $pdo->query("SELECT COUNT(*) FROM users")-> fetchColumn();
 } catch (PDOException $e) {
     # Keeps default zero counts if a table is not yet initialized
@@ -50,7 +53,7 @@ require_once __DIR__ . '/../includes/header.php';
     <ul>
         <li>Courses Listed: <strong><?= e((string) $counts['courses']) ?></strong></li>
         <li>Staff Profiles: <strong><?= e((string) $counts['staff']) ?></strong></li>
-        <li>Contact Inquiries: <strong><?= e((string) $counts['inquiries']) ?></strong></li>
+        <li>Contact Messages: <strong><?= e((string) $counts['messages']) ?></strong></li>
         <li>Staff Accounts: <strong><?= e((string) $counts['users']) ?></strong></li>
     </ul>
 </div>

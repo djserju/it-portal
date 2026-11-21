@@ -4,6 +4,9 @@ session_start();
 
 # Includes database configuration and PDO connection
 require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/classes/database.php';
+
+$pdo = (new Database())->getConnection();
 
 # Redirects authenticated users directly to the admin dashboard
 if (isset($_SESSION['user_id'])) {

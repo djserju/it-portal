@@ -1,9 +1,17 @@
 <?php
-# Loads databse configuration constants
+# Loads database configuration and message persistence helpers
 require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/classes/database.php';
+require_once __DIR__ . '/classes/message.php';
 
-# Initializes feedback messages and form input variables
-$error = '';
+# Initializes per-field validation feedback and form input values
+$errors = [
+    'name' => '',
+    'email' => '',
+    'subject' => '',
+    'message' => '',
+];
+$saveError = '';
 $success = '';
 $name = '';
 $email = '';
@@ -12,84 +20,94 @@ $message = '';
 
 # Handles form submission via POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    # Trims leading/trailing whitespace
-    $name = trim($_POST['name'] ?? '');
-    $email = trim($_POST['email'] ?? '');
-    $subject = trim($_POST['subject'] ?? '');
-    $message = trim($_POST['message'] ?? '');
+    $name = is_string($_POST['name'] ?? null) ? $_POST['name'] : '';
+    $email = is_string($_POST['email'] ?? null) ? $_POST['email'] : '';
+    $subject = is_string($_POST['subject'] ?? null) ? $_POST['subject'] : '';
+    $message = is_string($_POST['message'] ?? null) ? $_POST['message'] : '';
     
-    # Validates required fields and email format
-    if ($name === '' || $email === '' || $subject === '' || $message === '') {
-        $error = 'All fields are required.';
-    } elseif (!filter_var($email,  FILTER_VALIDATE_EMAIL)) {
-        $error = 'Please enter a valid email address.';
+    if (trim($name) === '') {
+        $errors['name'] = 'Name is required.';
+    }
+
+    if (trim($email) === '') {
+        $errors['email'] = 'Email is required.';
+    } elseif (!filter_var(trim($email), FILTER_VALIDATE_EMAIL)) {
+        $errors['email'] = 'Enter a valid email address.';
+    }
+
+    if (trim($subject) === '') {
+        $errors['subject'] = 'Subject is required.';
+    }
+
+    if (trim($message) === '') {
+        $errors['message'] = 'Message is required.';
     } else {
+        $messageLength = mb_strlen(trim($message), 'UTF-8');
+        if ($messageLength < 10 || $messageLength > 1000) {
+            $errors['message'] = 'Message must be between 10 and 1,000 characters.';
+        }
+    }
+
+    if (!array_filter($errors)) {
         try {
-            # Connects to database and inserts inquiry using a prepared statement
-            $pdo = new PDO(
-                'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME . ';charset=utf8mb4',
-                DB_USER,
-                DB_PASS,
-                [
-                    # Throws PDOException on database errors 
-                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                    # Returns query results as associative arrays 
-                    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-                ]
-            );
-            
-            # Inserts inquiry using bound parameters to prevent SQL injection
-            $stmt = $pdo->prepare(
-                'INSERT INTO inquiries (name, email, subject, message) VALUES (:name, :email, :subject, :message)'
-            );
-            $stmt->execute([
-                ':name' => $name,
-                ':email' => $email,
-                ':subject' => $subject,
-                ':message' => $message,
+            $pdo = (new Database())->getConnection();
+            $stored = (new Message($pdo))->create([
+                'name' => $name,
+                'email' => $email,
+                'subject' => $subject,
+                'message' => $message,
             ]);
-            
-            # Resets form fields on success
-            $success = 'Inquiry sent.';
-            $name = $email = $subject = $message = '';
+
+            if ($stored) {
+                $success = 'Your message has been sent to the Head of Department.';
+                $name = $email = $subject = $message = '';
+            } else {
+                $saveError = 'Your message could not be saved. Please try again.';
+            }
         } catch (PDOException $e) {
-            # Displays a error message if database insert fails
-            $error = 'Could not send inquiry.';
+            error_log($e->getMessage());
+            $saveError = 'Your message could not be saved. Please try again later.';
         }
     }
 }
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact the HOD - IT Portal</title>
-    <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
-    <?php if (file_exists(__DIR__ . '/includes/header.php')) require __DIR__ . '/includes/header.php'; ?>
+<?php
+$pageTitle = 'Contact the HOD - IT Portal';
+if (file_exists(__DIR__ . '/includes/header.php')) require __DIR__ . '/includes/header.php';
+?>
     
-    <main>
-        <h1>Contact the HOD</h1>
+<h1>Contact the HOD</h1>
         
-        <?php if ($success !== ''): ?>
-            <p class="success"><?= htmlspecialchars($success) ?></p>
-        <?php endif; ?>
+<?php if ($success !== ''): ?>
+    <p class="alert alert-success"><?= e($success) ?></p>
+<?php endif; ?>
     
-        <?php if ($error !== ''): ?>
-            <p class="error"><?= htmlspecialchars($error) ?></p>
-        <?php endif; ?>
+<?php if ($saveError !== ''): ?>
+    <p class="alert alert-error"><?= e($saveError) ?></p>
+<?php endif; ?>
     
-        <form method="post" action="contact.php">
-            <label>Name <input type="text" name="name" required value="<?= htmlspecialchars($name) ?>"></label>
-            <label>Email <input type="email" name="email" required value="<?= htmlspecialchars($email) ?>"></label>
-            <label>Subject <input type="text" name="subject" required value="<?= htmlspecialchars($subject) ?>"></label>
-            <label>Message <textarea name="message" rows="5" required><?= htmlspecialchars($message) ?></textarea></label>
-            <button type="submit">Send</button>
-        </form>
-    </main>
+<form method="post" action="contact.php">
+    <div class="form-group">
+        <label for="name">Name</label>
+        <input class="form-control<?= $errors['name'] !== '' ? ' is-invalid' : '' ?>" type="text" id="name" name="name" required value="<?= e($name) ?>" aria-invalid="<?= $errors['name'] !== '' ? 'true' : 'false' ?>" aria-describedby="name-error">
+        <span class="field-error" id="name-error"><?= e($errors['name']) ?></span>
+    </div>
+    <div class="form-group">
+        <label for="email">Email</label>
+        <input class="form-control<?= $errors['email'] !== '' ? ' is-invalid' : '' ?>" type="email" id="email" name="email" required value="<?= e($email) ?>" aria-invalid="<?= $errors['email'] !== '' ? 'true' : 'false' ?>" aria-describedby="email-error">
+        <span class="field-error" id="email-error"><?= e($errors['email']) ?></span>
+    </div>
+    <div class="form-group">
+        <label for="subject">Subject</label>
+        <input class="form-control<?= $errors['subject'] !== '' ? ' is-invalid' : '' ?>" type="text" id="subject" name="subject" required value="<?= e($subject) ?>" aria-invalid="<?= $errors['subject'] !== '' ? 'true' : 'false' ?>" aria-describedby="subject-error">
+        <span class="field-error" id="subject-error"><?= e($errors['subject']) ?></span>
+    </div>
+    <div class="form-group">
+        <label for="message">Message</label>
+        <textarea class="form-control<?= $errors['message'] !== '' ? ' is-invalid' : '' ?>" id="message" name="message" rows="5" required aria-invalid="<?= $errors['message'] !== '' ? 'true' : 'false' ?>" aria-describedby="message-error"><?= e($message) ?></textarea>
+        <span class="field-error" id="message-error"><?= e($errors['message']) ?></span>
+    </div>
+    <button type="submit" class="btn">Send Message</button>
+</form>
     
-    <?php if (file_exists(__DIR__ . '/includes/footer.php')) require __DIR__ . '/includes/footer.php'; ?>
-</body>
-</html>
+<?php if (file_exists(__DIR__ . '/includes/footer.php')) require __DIR__ . '/includes/footer.php'; ?>

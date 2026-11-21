@@ -21,7 +21,7 @@ class Database {
     public function getConnection(): PDO {
         if ($this->pdo === null) {
             # Data source name specifying driver, host and database name
-            $dsn = "mysql:host={$this->host};dbname={$this->dbName}";
+            $dsn = "mysql:host={$this->host};dbname={$this->dbName};charset=utf8mb4";
         
             # Configures PDO to throw exceptions on errors and returns associative arrays
             $options = [

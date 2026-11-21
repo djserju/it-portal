@@ -17,29 +17,37 @@ require_once __DIR__ . '/includes/header.php';
     </p>
     <div>
         <a href="courses.php" class="btn">Browse Courses</a>
-        <a href="contact.php" class="btn" style="background-color: #6b7280; margin-left: 8px;">Contact HOD</a>
+        <a href="admissions.php" class="btn" style="background-color: #6b7280; margin-left: 8px;">Admissions</a>
     </div>
 </div>
 
 <!-- Navigation cards grid -->
 <div class="grid-3">
-    <!-- Course catalog card -->
-    <div class="card">
-        <h3>Course Catalog</h3>
-        <p>Explore undergraduate and graduate information technology courses, credit requirements and descriptions.</p>
-        <a href="courses.php" class="btn">View Courses &rarr;</a>
-    </div>
     <!-- Staff directory card -->
     <div class="card">
         <h3>Staff Directory</h3>
-        <p>Find faculty profiles, office hours, departmental roles and contact information</p>
+        <p>Find faculty profiles, departmental roles and contact information.</p>
         <a href="staff.php" class="btn">View Faculty &rarr;</a>
+    </div>
+
+    <!-- Course catalog card -->
+    <div class="card">
+        <h3>Course Catalog</h3>
+        <p>Explore information technology courses, credit requirements and descriptions.</p>
+        <a href="courses.php" class="btn">View Courses &rarr;</a>
+    </div>
+
+    <!-- Admissions card -->
+    <div class="card">
+        <h3>Admissions</h3>
+        <p>Review undergraduate entry requirements and apply to UCC.</p>
+        <a href="admissions.php" class="btn">View Requirements &rarr;</a>
     </div>
 
     <!-- Contact HOD card -->
     <div class="card">
         <h3>Contact HOD</h3>
-        <p>Submit inquires, administrative questions or appointment requests directly to the Head of Department.</p>
+        <p>Send inquiries, administrative questions or appointment requests to the Head of Department.</p>
         <a href="contact.php" class="btn">Send Message &rarr;</a>
     </div>
 </div>

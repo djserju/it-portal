@@ -16,8 +16,9 @@ $pageTitle = $pageTitle ?? 'UCC IT Department Portal';
 $basePath = $basePath ?? ''; 
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Escape the dynamic page title for safe HTML output -->
     <title><?= e($pageTitle) ?></title>

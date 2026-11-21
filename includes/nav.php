@@ -13,13 +13,18 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                 </a>
             </li>
             <li>
-                <a href="<?= e($basePath) ?>courses.php" class="<?= $currentPage === 'courses.php' ? 'active' : '' ?>">
+                <a href="<?= e($basePath) ?>courses.php" class="<?= in_array($currentPage, ['courses.php', 'course.php'], true) ? 'active' : '' ?>">
                     Courses
                 </a>
             </li>
             <li>
                 <a href="<?= e($basePath) ?>staff.php" class="<?= $currentPage === 'staff.php' ? 'active' : '' ?>">
                     Staff Directory
+                </a>
+            </li>
+            <li>
+                <a href="<?= e($basePath) ?>admissions.php" class="<?= $currentPage === 'admissions.php' ? 'active' : '' ?>">
+                    Admissions
                 </a>
             </li>
             <li>
