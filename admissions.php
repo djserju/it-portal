@@ -1,11 +1,6 @@
 <?php
-# Includes configuration constants
 require_once __DIR__ . '/config.php';
-
-# Sets the page title for the browser tab
-$pageTitle = 'Admissions - IT Department Portal';
-
-# Includes the global header template
+$pageTitle = 'Admissions';
 require_once __DIR__ . '/includes/header.php';
 ?>
 

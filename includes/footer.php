@@ -1,5 +1,5 @@
 <?php
-# Closes the main content container wrapper opened in header.php
+// Close the page layout
 ?>
     </main>
 

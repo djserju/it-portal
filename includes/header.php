@@ -1,36 +1,26 @@
 <?php
-# Start or resume the PHP session on every page
+// Start the session and use a default title
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-# Helper function to safely escape output using htmlspecialchars()
-if (!function_exists('e')) {
-    function e(mixed $value): string {
-        return htmlspecialchars((string) ($value ?? ''), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
-    }
-}
-
-# Set a default page title
-$pageTitle = $pageTitle ?? 'UCC IT Department Portal';
-$basePath = $basePath ?? ''; 
+$pageTitle = isset($pageTitle) ? $pageTitle : 'UCC IT Department Portal';
+$basePath = isset($basePath) ? $basePath : '';
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Escape the dynamic page title for safe HTML output -->
-    <title><?= e($pageTitle) ?></title>
-    <!-- Link the main stylesheet using $basePath -->
-    <link rel="stylesheet" href="<?= e($basePath) ?>css/style.css">
+    <title><?= h($pageTitle) ?></title>
+    <link rel="stylesheet" href="<?= h($basePath) ?>css/style.css">
 </head>
 <body>
-    <!-- Top Departmental Banner -->
+    <!-- Top banner -->
     <header class="site-header">
         <div class="container header-inner">
             <div class="brand">
-                <a href="<?= e($basePath) ?>index.php" class="brand-link">
+                <a href="<?= h($basePath) ?>index.php" class="brand-link">
                     <span class="brand-badge">UCC</span>
                     <div>
                         <h1>Department of Information Technology</h1>

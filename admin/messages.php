@@ -1,36 +1,31 @@
 <?php
 require_once __DIR__ . '/../includes/auth_check.php';
 require_once __DIR__ . '/../config.php';
-require_once __DIR__ . '/../classes/database.php';
-require_once __DIR__ . '/../classes/message.php';
 
-$pdo = (new Database())->getConnection();
-$messages = (new Message($pdo))->all();
+$pdo = db();
+$stmt = $pdo->query('SELECT * FROM messages ORDER BY created_at DESC');
+$messages = $stmt->fetchAll();
 
-$pageTitle = 'Contact Messages - Admin';
+$pageTitle = 'Contact Messages';
 $basePath = '../';
 require_once __DIR__ . '/../includes/header.php';
 ?>
 
-<section class="card">
+<div class="card">
     <h2>Contact Messages</h2>
-    <p>Newest submissions appear first.</p>
 
-    <?php if (empty($messages)): ?>
-        <p>No messages have been submitted.</p>
+    <?php if (count($messages) === 0): ?>
+        <p>No messages.</p>
     <?php else: ?>
         <?php foreach ($messages as $message): ?>
-            <article class="card">
-                <h3><?= e($message['subject']) ?></h3>
-                <p>
-                    From: <strong><?= e($message['name']) ?></strong>
-                    (<a href="mailto:<?= e($message['email']) ?>"><?= e($message['email']) ?></a>)
-                </p>
-                <p><small><?= e(date('F j, Y g:i A', strtotime($message['created_at']))) ?></small></p>
-                <p><?= nl2br(e($message['message'])) ?></p>
-            </article>
+            <div class="card">
+                <h3><?= h($message['subject']) ?></h3>
+                <p>From: <?= h($message['name']) ?> (<?= h($message['email']) ?>)</p>
+                <p><?= h($message['created_at']) ?></p>
+                <p><?= nl2br(h($message['message'])) ?></p>
+            </div>
         <?php endforeach; ?>
     <?php endif; ?>
-</section>
+</div>
 
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>
