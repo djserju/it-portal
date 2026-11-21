@@ -64,6 +64,9 @@ require_once __DIR__ . '/../includes/header.php';
     <h3>Quick Actions</h3>
     <p>
         <a href="../index.php" class="btn">View Public Portal</a>
+        <a href="courses.php" class="btn">Manage Courses</a>
+        <a href="staff.php" class="btn">Manage Staff</a>
+        <a href="messages.php" class="btn">View Messages</a>
         <a href="../logout.php" class="btn">Sign Out</a>
     </p>
 </div>
