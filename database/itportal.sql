@@ -78,4 +78,4 @@ INSERT INTO staff (name, position, phone, email, photo) VALUES
 -- 1 sample admin account
 -- The password is stored only as a PHP password_hash() value.
 INSERT INTO users (name, email, password_hash) VALUES
-('IT Portal Admin', 'admin@ucc.edu.jm', '$2a$12$dzAjnxu/9/yCsil0v1sK8epSLDO7mWsyjW9VvgMZAjXTN5iiCpgjG');
+('IT Portal Admin', 'admin@ucc.edu.jm', '$2y$10$trWE3jZvcYncqX9qi52tKuWvU.RpMUSoDURLekFGImmpNGLREwGKW');
