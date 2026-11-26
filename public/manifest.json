@@ -1,0 +1,21 @@
+{
+    "name": "UCC IT Portal",
+    "short_name": "UCC IT",
+    "background_color": "#f5f8fa",
+    "display": "standalone",
+    "description": "Courses, faculty, admissions, and department information from UCC Information Technology.",
+    "theme_color": "#087f82",
+    "start_url": "/",
+    "icons": [
+        {
+            "src": "logo.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        }
+    ]
+}

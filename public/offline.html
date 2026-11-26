@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#087f82">
+    <title>You're offline | UCC IT Portal</title>
+    <style>
+        :root { color-scheme: light; font-family: Arial, sans-serif; background: #f5f8fa; color: #17283a; }
+        body { box-sizing: border-box; display: grid; min-height: 100vh; margin: 0; padding: 1.5rem; place-items: center; }
+        main { width: min(100%, 34rem); padding: 2rem; border: 1px solid #dce5ec; border-radius: 1rem; background: #fff; box-shadow: 0 1rem 3rem rgb(16 43 70 / 10%); text-align: center; }
+        .brand { display: inline-grid; width: 3.5rem; height: 3.5rem; margin-bottom: 1rem; border-radius: 50%; background: #102b46; color: #fff; font-size: 1.1rem; font-weight: 700; place-items: center; }
+        h1 { margin: 0; color: #102b46; font-size: clamp(1.7rem, 5vw, 2.25rem); }
+        p { color: #647486; line-height: 1.6; }
+        button { margin-top: 0.75rem; padding: 0.75rem 1.25rem; border: 0; border-radius: 0.5rem; background: #087f82; color: #fff; cursor: pointer; font: inherit; font-weight: 700; }
+        button:focus-visible { outline: 3px solid #efbd58; outline-offset: 3px; }
+    </style>
+</head>
+<body>
+    <main>
+        <div class="brand" aria-hidden="true">UCC</div>
+        <h1>You're offline</h1>
+        <p>The UCC IT Portal couldn't load this page. Check your internet connection and try again.</p>
+        <button type="button" onclick="window.location.reload()">Try again</button>
+    </main>
+</body>
+</html>
