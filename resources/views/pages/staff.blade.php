@@ -23,7 +23,7 @@
                     <article class="staff-card">
                         <img
                             class="staff-photo"
-                            src="{{ \Illuminate\Support\Facades\Storage::disk('public')->url($person->photo) }}"
+                            src="{{ asset('storage/'.$person->photo) }}"
                             alt=""
                             width="96"
                             height="96"

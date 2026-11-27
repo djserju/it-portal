@@ -11,11 +11,13 @@ class ProfileUpdateTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_profile_page_is_displayed(): void
+    public function test_settings_pages_are_displayed(): void
     {
         $this->actingAs($user = User::factory()->create());
 
-        $this->get('/settings/profile')->assertOk();
+        foreach (['/settings/profile', '/settings/password', '/settings/appearance'] as $path) {
+            $this->get($path)->assertOk();
+        }
     }
 
     public function test_profile_information_can_be_updated(): void

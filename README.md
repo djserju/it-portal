@@ -37,7 +37,14 @@ The public Blade interface includes a responsive home page, course catalog with 
 
 The seeders create the 10 existing courses, 5 existing staff profiles, and `admin@ucc.edu.jm`. They are safe to run again without duplicating those records.
 
-Start the app for local development with `php artisan serve`. To use the authentication starter kit's styles, install Node.js and npm, then run `npm install` and `npm run build`. Configure Apache's document root to `public/` when using XAMPP.
+Install a current Node.js LTS release (npm is included), then build the frontend assets required by the login and other authentication pages:
+
+```powershell
+npm install
+npm run build
+```
+
+Run `npm run build` again after changing frontend assets. For frontend development with automatic rebuilds, use `npm run dev` in a separate terminal and leave it running. Start the Laravel app for local development with `php artisan serve`. Configure Apache's document root to `public/` when using XAMPP.
 
 ## Admin
 

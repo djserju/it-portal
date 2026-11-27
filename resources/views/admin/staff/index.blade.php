@@ -60,7 +60,7 @@
                 <tbody class="divide-y divide-zinc-100 dark:divide-zinc-800">
                     @forelse ($staffMembers as $person)
                         <tr>
-                            <td class="px-4 py-3"><img class="h-12 w-12 rounded-full object-cover" src="{{ \Illuminate\Support\Facades\Storage::disk('public')->url($person->photo) }}" alt="" width="48" height="48"></td>
+                            <td class="px-4 py-3"><img class="h-12 w-12 rounded-full object-cover" src="{{ asset('storage/'.$person->photo) }}" alt="" width="48" height="48"></td>
                             <td class="px-4 py-3 font-semibold text-zinc-900 dark:text-white">{{ $person->name }}</td>
                             <td class="px-4 py-3">{{ $person->position }}</td>
                             <td class="px-4 py-3">{{ $person->phone }}</td>
